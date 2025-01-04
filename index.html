@@ -8,27 +8,27 @@
 <body>
   <h1>Todo List</h1>
   <form id="todoForm">
-    <input type="text" id="todoInput" placeholder="New Todo" required>
+    <input type="text" id="todoInput" placeholder="Todo" required>
     <button type="submit">Add Todo</button>
   </form>
   <ul id="todoList"></ul>
 
   <script>
-    const todoForm = document.getElementById('todoForm');
-    const todoInput = document.getElementById('todoInput');
-    const todoList = document.getElementById('todoList');
-
-    async function fetchTodos() {
-      const response = await fetch('/api/todos');
-      const todos = await response.json();
-      todoList.innerHTML = '';
-      todos.forEach(todo => {
-        const li = document.createElement('li');
-        li.textContent = todo.text;
-        li.dataset.id = todo.id;
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.onclick = () => deleteTodo(todo.id);
+    const todoForm=document.getElementById('todoForm');
+    const todoInput=document.getElementById('todoInput');
+    const todoList=document.getElementById('todoList');
+    const API_URL = 'https://your-backend-api.vercel.app';
+    async function fetchTodos(){
+      const response=await fetch('/api/todos');
+      const todos=await response.json();
+      todoList.innerHTML='';
+      todos.forEach(todo=>{
+        const li=document.createElement('li');
+        li.textContent=todo.text;
+        li.dataset.id=todo.id;
+        const deleteBtn=document.createElement('button');
+        deleteBtn.textContent='Delete';
+        deleteBtn.onclick=()=>deleteTodo(todo.id);
         li.appendChild(deleteBtn);
         todoList.appendChild(li);
       });
@@ -36,22 +36,22 @@
 
     async function addTodo(event) {
       event.preventDefault();
-      const todo = { id: Date.now(), text: todoInput.value };
-      await fetch('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todo)
+      const todo={ id:Date.now(),text:todoInput.value };
+      await fetch('/api/todos',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(todo)
       });
-      todoInput.value = '';
+      todoInput.value='';
       fetchTodos();
     }
 
-    async function deleteTodo(id) {
-      await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+    async function deleteTodo(id){
+      await fetch(`/api/todos/${id}`,{method:'DELETE'});
       fetchTodos();
     }
 
-    todoForm.addEventListener('submit', addTodo);
+    todoForm.addEventListener('submit',addTodo);
     fetchTodos();
   </script>
 </body>
