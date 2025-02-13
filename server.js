@@ -1,3 +1,5 @@
+const API_URL = 'https://your-backend-api.vercel.app';
+
 const express = require('express');
 const app = express();
 const port = 3000;
